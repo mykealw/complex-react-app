@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 import Axios from "axios";
+import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 
 function CreatePost(props) {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext)
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -14,10 +18,10 @@ function CreatePost(props) {
       const response = await Axios.post("http://localhost:8080/create-post", {
         title,
         body,
-        token: localStorage.getItem("complexappToken"),
+        token: appState.user.token,
       });
-      props.addFlashMessage("New Post Created!")
-      navigate(`/post/${response.data}`)
+      appDispatch({type: "flashMessage", value: "congrats you made a post"})
+      navigate(`/post/${response.data}`);
       // console.log(response.data, "new post made");
     } catch (e) {
       console.log(e.message);
