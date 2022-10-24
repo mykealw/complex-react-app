@@ -3,7 +3,6 @@ import Page from "./Page";
 import { useParams, Link } from "react-router-dom";
 import Axios from "axios";
 import LoadingDotsIcon from "./LoadingDotsIcon";
-import reactMarkdown from "react-markdown";
 import ReactMarkdown from "react-markdown";
 
 function ViewSinglePost() {
