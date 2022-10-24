@@ -15,6 +15,7 @@ import Home from "./components/Home";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
+import Profile from "./components/Profile";
 
 function Main() {
   const initialState = {
@@ -31,7 +32,7 @@ function Main() {
     switch (action.type) {
       case "login":
         draft.loggedIn = true;
-        draft.user = action.data
+        draft.user = action.data;
         break;
       case "logout":
         draft.loggedIn = false;
@@ -45,7 +46,7 @@ function Main() {
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (state.loggedIn) {
       localStorage.setItem("complexappToken", state.user?.token);
       localStorage.setItem("complexappUsername", state.user?.username);
@@ -55,7 +56,7 @@ function Main() {
       localStorage.removeItem("complexappUsername");
       localStorage.removeItem("complexappAvatar");
     }
-  }, [state.loggedIn])
+  }, [state.loggedIn]);
 
   return (
     <StateContext.Provider value={state}>
@@ -64,6 +65,7 @@ function Main() {
           <FlashMessages message={state.flashMessages} />
           <Header />
           <Routes>
+            <Route path="/profile/:username/*" element={<Profile />} />
             <Route
               path="/"
               element={state.loggedIn ? <Home /> : <HomeGuest />}
